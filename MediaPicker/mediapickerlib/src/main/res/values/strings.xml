@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">mediapickerlib</string>
+    <string name="disagree">Disagree</string>
+    <string name="agree">Agree</string>
+</resources>
