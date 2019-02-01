@@ -2,14 +2,18 @@ package leonardolana.mediapickerlib.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import leonardolana.mediapickerlib.R
 import leonardolana.mediapickerlib.data.MediaAlbum
 
 class MediaAlbumRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onClick(album: MediaAlbum)
+    }
+
     private var data : MutableList<MediaAlbum> = ArrayList<MediaAlbum>()
+    private var onItemClickListener : OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -21,16 +25,21 @@ class MediaAlbumRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         val mediaAlbumHolder = vh as MediaAlbumRecyclerViewAdapterViewHolder
         val mediaAlbum = data[position]
 
-        mediaAlbumHolder.onBindViewHolder(mediaAlbum)
+        mediaAlbumHolder.onBindViewHolder(mediaAlbum, onItemClickListener)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    fun setData(albums: Map<String, MediaAlbum>) {
+    fun setData(albumsMap: Map<String, MediaAlbum>) {
         data.clear()
-        data.addAll(albums.values)
+        val albums = albumsMap.values.sortedWith(Comparator { o1, o2 -> o2.getCover().lastModifiedDate.compareTo(o1.getCover().lastModifiedDate) })
+        data.addAll(albums)
+    }
+
+    fun setOnItemClickListener(listener : OnItemClickListener) {
+        onItemClickListener = listener
     }
 
 }

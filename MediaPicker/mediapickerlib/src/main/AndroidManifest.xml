@@ -7,8 +7,11 @@
 
     <application>
 
+        <activity android:name=".MediaPickerAlbumActivity"
+                  android:screenOrientation="portrait"/>
+
         <activity android:name=".MediaPickerActivity"
-        android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>
 
     </application>
 

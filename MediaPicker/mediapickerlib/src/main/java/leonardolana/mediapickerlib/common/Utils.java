@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 import leonardolana.mediapickerlib.data.MediaAlbum;
 import leonardolana.mediapickerlib.data.MediaItem;
 
@@ -43,35 +45,75 @@ public class Utils {
         try {
             Uri uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-            String[] projection = { MediaStore.MediaColumns.DATA,
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+            String[] projection = {MediaStore.MediaColumns.DATA,
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                    MediaStore.MediaColumns.DATE_MODIFIED
+            };
 
             Cursor cursor = context.getContentResolver().query(uri, projection, null,
-                    null, null);
+                    null, MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
+
+            String[] projectionVideo = {MediaStore.MediaColumns.DATA,
+                    MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                    MediaStore.MediaColumns.DATE_MODIFIED
+            };
+
+            Cursor cursorVideos = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    projectionVideo, null, null,
+                    MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
 
             int pathColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             int albumNameColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+            int dateModifiedColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
 
             String itemPath;
             String albumName;
+            long itemLastModifiedDate;
             MediaAlbum mediaAlbum;
 
             while (cursor.moveToNext()) {
                 itemPath = cursor.getString(pathColumnIndex);
                 albumName = cursor.getString(albumNameColumnIndex);
+                itemLastModifiedDate = cursor.getLong(dateModifiedColumnIndex);
 
                 mediaAlbum = result.get(albumName);
-                if(mediaAlbum == null)
+                if (mediaAlbum == null)
                     mediaAlbum = new MediaAlbum(albumName);
 
-                mediaAlbum.addMedia(new MediaItem(itemPath));
+                mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate));
+                result.put(albumName, mediaAlbum);
+            }
+
+            while (cursorVideos.moveToNext()) {
+                itemPath = cursorVideos.getString(pathColumnIndex);
+                albumName = cursorVideos.getString(albumNameColumnIndex);
+                itemLastModifiedDate = cursor.getLong(dateModifiedColumnIndex);
+
+                mediaAlbum = result.get(albumName);
+                if (mediaAlbum == null)
+                    mediaAlbum = new MediaAlbum(albumName);
+
+                mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate));
                 result.put(albumName, mediaAlbum);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        for(MediaAlbum album : result.values()) {
+            album.sortByLastDateModified();
+        }
+
         return result;
+    }
+
+    public static boolean isVideo(String path) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+
+        if (TextUtils.isEmpty(extension))
+            return false;
+
+        return extension.equals("mp4");
     }
 
 }
