@@ -1,6 +1,8 @@
 package leonardolana.mediapickerlib
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_media_album_picker.*
@@ -24,6 +26,8 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
 
         setContentView(R.layout.activity_media_album_picker)
 
+        supportActionBar?.title = getString(R.string.choose_album)
+
         val gridLayoutManager = GridLayoutManager(applicationContext, 2)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.addItemDecoration(RecyclerViewItemSeparator())
@@ -42,6 +46,13 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
         return mediaPresenter
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+    }
+
     override fun onAlbumsLoaded(albums: Map<String, MediaAlbum>) {
         mediaAdapter.setData(albums)
     }
@@ -55,7 +66,7 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
     }
 
     override fun openAlbum(album: MediaAlbum) {
-        MediaPickerActivity.launch(applicationContext, album)
+        MediaPickerActivity.launch(this, album)
     }
 
 

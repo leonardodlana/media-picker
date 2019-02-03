@@ -2,4 +2,6 @@
     <string name="app_name">mediapickerlib</string>
     <string name="disagree">Disagree</string>
     <string name="agree">Agree</string>
+    <string name="choose_album">Choose an album</string>
+    <string name="choose_media">Choose media</string>
 </resources>
