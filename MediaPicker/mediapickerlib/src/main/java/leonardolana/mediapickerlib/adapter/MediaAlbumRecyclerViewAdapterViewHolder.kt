@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import leonardolana.mediapickerlib.R
-import leonardolana.mediapickerlib.common.ImageLoader
 import leonardolana.mediapickerlib.data.MediaAlbum
 
 class MediaAlbumRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,10 +21,10 @@ class MediaAlbumRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.Vie
         textViewAlbumName.text = mediaAlbum.name
         textViewAlbumMediaCount.text = mediaAlbum.mediaItems.size.toString()
 
-        imageViewThumbnail.setImageBitmap(null)
-        ImageLoader.loadThumbnail(mediaAlbum.getCover().path) { bitmap ->
-            imageViewThumbnail.setImageBitmap(bitmap)
-        }
+        Glide.with(itemView.context)
+            .load(mediaAlbum.getCover().path)
+            .thumbnail()
+            .into(imageViewThumbnail)
 
         imageViewThumbnail.setOnClickListener {
             onItemClickListener?.onClick(mediaAlbum)

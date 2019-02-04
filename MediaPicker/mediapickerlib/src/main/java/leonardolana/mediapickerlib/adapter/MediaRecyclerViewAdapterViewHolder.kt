@@ -3,8 +3,8 @@ package leonardolana.mediapickerlib.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import leonardolana.mediapickerlib.R
-import leonardolana.mediapickerlib.common.ImageLoader
 import leonardolana.mediapickerlib.data.MediaItem
 
 class MediaRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -19,12 +19,11 @@ class MediaRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.ViewHold
         isSelected: Boolean,
         onItemClickListener: MediaRecyclerViewAdapter.OnItemClickListener?
     ) {
-        //Avoid wrong images when recycling the view
-        imageViewThumbnail.setImageBitmap(null)
 
-        ImageLoader.loadThumbnail(mediaItem.path) { bitmap ->
-            imageViewThumbnail.setImageBitmap(bitmap)
-        }
+        Glide.with(itemView.context)
+            .load(mediaItem.path)
+            .thumbnail()
+            .into(imageViewThumbnail)
 
         imageViewThumbnail.setOnLongClickListener {
             onItemClickListener?.onLongClick(position, mediaItem)

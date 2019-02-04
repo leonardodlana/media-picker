@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/buttonOpenPicker"/>
+
+    <leonardolana.mediapickerlib.common.ButtonTextViewContained android:layout_width="match_parent"
+                                                                android:id="@+id/buttonOpenPicker"
+                                                                android:layout_height="40dp"
+                                                                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                                                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                                                                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                                                                android:layout_alignParentBottom="true"
+                                                                android:layout_marginTop="@dimen/activity_vertical_margin"
+                                                                android:text="@string/open_picker"
+                                                                android:textColor="@color/md_white_1000"/>
+
+</RelativeLayout>

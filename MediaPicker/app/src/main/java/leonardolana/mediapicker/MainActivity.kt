@@ -3,8 +3,10 @@ package leonardolana.mediapicker
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import leonardolana.mediapickerlib.MediaPickerAlbumActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
 
@@ -13,9 +15,25 @@ class MainActivity : Activity() {
         const val KEY_DATA = "data"
     }
 
+    private lateinit var adapter : RecyclerViewAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_main)
+
+        adapter = RecyclerViewAdapter()
+
+        val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+
+        buttonOpenPicker.setOnClickListener {
+            openPicker()
+        }
+    }
+
+    private fun openPicker() {
         val intentPicker = Intent(applicationContext, MediaPickerAlbumActivity::class.java)
         startActivityForResult(intentPicker, REQUEST_CODE)
     }
@@ -23,8 +41,9 @@ class MainActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             val selectedPaths = data?.getStringArrayListExtra(KEY_DATA)
-
-            Toast.makeText(applicationContext, "" + selectedPaths?.size, Toast.LENGTH_SHORT).show()
+            if (selectedPaths != null) {
+                adapter.setData(selectedPaths)
+            }
         }
     }
 

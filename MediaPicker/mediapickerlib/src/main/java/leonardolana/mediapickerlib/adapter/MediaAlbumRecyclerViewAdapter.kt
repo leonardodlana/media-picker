@@ -15,6 +15,10 @@ class MediaAlbumRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     private var data : MutableList<MediaAlbum> = ArrayList<MediaAlbum>()
     private var onItemClickListener : OnItemClickListener? = null
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.media_album_item, parent, false)
@@ -30,6 +34,10 @@ class MediaAlbumRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     fun setData(albumsMap: Map<String, MediaAlbum>) {
