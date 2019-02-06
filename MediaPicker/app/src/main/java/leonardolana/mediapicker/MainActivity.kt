@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import leonardolana.mediapickerlib.MediaPickerAlbumActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import leonardolana.mediapickerlib.data.MediaItem
 
 class MainActivity : Activity() {
 
@@ -40,9 +40,9 @@ class MainActivity : Activity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            val selectedPaths = data?.getStringArrayListExtra(KEY_DATA)
-            if (selectedPaths != null) {
-                adapter.setData(selectedPaths)
+            val selectedItems = data?.getParcelableArrayListExtra<MediaItem>(KEY_DATA)
+            if (selectedItems != null) {
+                adapter.setData(selectedItems)
             }
         }
     }

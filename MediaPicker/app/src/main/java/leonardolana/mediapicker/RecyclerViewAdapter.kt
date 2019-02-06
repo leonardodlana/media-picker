@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
 import com.bumptech.glide.request.RequestOptions
-
+import leonardolana.mediapickerlib.data.MediaItem
 
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val data: MutableList<String> = ArrayList()
+    private val data: MutableList<MediaItem> = ArrayList()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(viewGroup.context)
@@ -24,16 +23,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
-        val path = data[position]
+        val mediaItem = data[position]
         val viewHolder = vh as RecyclerViewAdapterViewHolder
 
-        viewHolder.textViewTitle.text = path
+        viewHolder.textViewTitle.text = mediaItem.name
 
         val options = RequestOptions()
         options.centerCrop()
 
         Glide.with(viewHolder.itemView.context)
-            .load(path)
+            .load(mediaItem.path)
             .thumbnail()
             .apply(options)
             .into(viewHolder.imageViewThumbnail)
@@ -43,9 +42,9 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return data.size
     }
 
-    fun setData(paths: ArrayList<String>) {
+    fun setData(mediaItems: ArrayList<MediaItem>) {
         data.clear()
-        data.addAll(paths)
+        data.addAll(mediaItems)
         notifyDataSetChanged()
     }
 

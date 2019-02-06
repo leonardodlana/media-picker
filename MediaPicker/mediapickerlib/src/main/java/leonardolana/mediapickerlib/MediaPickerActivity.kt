@@ -1,7 +1,6 @@
 package leonardolana.mediapickerlib
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
@@ -15,7 +14,6 @@ import leonardolana.mediapickerlib.common.RecyclerViewItemSeparator
 import leonardolana.mediapickerlib.data.MediaAlbum
 import leonardolana.mediapickerlib.data.MediaItem
 import leonardolana.mediapickerlib.loader.AlbumRepository
-import java.util.*
 
 class MediaPickerActivity : BaseActivity(), MediaPickerView {
 
@@ -96,9 +94,9 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
         mediaAdapter.notifyItemChanged(position)
     }
 
-    override fun closeWithResult(pathList: ArrayList<String>) {
+    override fun closeWithResult(pathList: Collection<MediaItem>) {
         val data = Intent()
-        data.putExtra(KEY_DATA, pathList)
+        data.putParcelableArrayListExtra(KEY_DATA, ArrayList(pathList))
         setResult(Activity.RESULT_OK, data)
         finish()
     }

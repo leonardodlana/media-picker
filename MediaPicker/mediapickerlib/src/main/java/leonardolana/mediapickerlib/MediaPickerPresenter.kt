@@ -2,7 +2,6 @@ package leonardolana.mediapickerlib
 
 import leonardolana.mediapickerlib.common.BasePresenter
 import leonardolana.mediapickerlib.data.MediaItem
-import java.util.ArrayList
 
 class MediaPickerPresenter(private val mediaPickerView: MediaPickerView) : BasePresenter() {
 
@@ -35,12 +34,7 @@ class MediaPickerPresenter(private val mediaPickerView: MediaPickerView) : BaseP
     }
 
     fun onSendClick() {
-        val pathList = ArrayList<String>()
-        selectedItems.values.forEach {
-            pathList.add(it.path)
-        }
-
-        mediaPickerView.closeWithResult(pathList)
+        mediaPickerView.closeWithResult(selectedItems.values)
     }
 
     override fun onDestroy() {
