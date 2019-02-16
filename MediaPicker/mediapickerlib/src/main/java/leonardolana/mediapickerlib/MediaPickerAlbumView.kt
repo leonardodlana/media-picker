@@ -2,6 +2,7 @@ package leonardolana.mediapickerlib
 
 import android.content.Context
 import leonardolana.mediapickerlib.data.MediaAlbum
+import leonardolana.mediapickerlib.data.MediaItem
 import leonardolana.mediapickerlib.permission.Permission
 
 interface MediaPickerAlbumView {
@@ -10,5 +11,7 @@ interface MediaPickerAlbumView {
     fun askPermission(permission: Permission)
     fun onAlbumsLoaded(albums: Map<String, MediaAlbum>)
     fun openAlbum(album: MediaAlbum)
+    fun openCamera()
+    fun finishWithResult(mediaItem: MediaItem)
 
 }

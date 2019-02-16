@@ -7,6 +7,6 @@ interface MediaPickerView {
     fun setSelectedItems(selectedItems: MutableSet<Int>)
     fun notifyItemChanged(position: Int)
     fun changeMenuVisibility(visible: Boolean)
-    fun closeWithResult(pathList: Collection<MediaItem>)
+    fun closeWithResult(mediaItems: Collection<MediaItem>)
 
 }

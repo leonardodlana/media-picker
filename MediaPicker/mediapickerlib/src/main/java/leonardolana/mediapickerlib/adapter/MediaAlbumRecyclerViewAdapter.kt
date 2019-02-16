@@ -44,6 +44,7 @@ class MediaAlbumRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         data.clear()
         val albums = albumsMap.values.sortedWith(Comparator { o1, o2 -> o2.getCover().lastModifiedDate.compareTo(o1.getCover().lastModifiedDate) })
         data.addAll(albums)
+        notifyDataSetChanged()
     }
 
     fun setOnItemClickListener(listener : OnItemClickListener) {

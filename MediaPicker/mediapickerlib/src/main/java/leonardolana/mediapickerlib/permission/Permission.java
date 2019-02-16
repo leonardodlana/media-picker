@@ -28,7 +28,7 @@ import android.text.TextUtils;
 
 public enum Permission {
     CAMERA(Manifest.permission.CAMERA),
-    READ_STORAGE(Manifest.permission.READ_EXTERNAL_STORAGE);
+    WRITE_STORAGE(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     private final String mName;
 

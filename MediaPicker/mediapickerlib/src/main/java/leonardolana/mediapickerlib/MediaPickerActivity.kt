@@ -20,7 +20,7 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
     companion object {
 
         private const val KEY_ALBUM_NAME = "album_name"
-        private const val KEY_DATA = "data"
+        const val KEY_DATA = "data"
 
         fun launch(activity: Activity, album: MediaAlbum) {
             val intentPicker = Intent(activity, MediaPickerActivity::class.java)
@@ -94,9 +94,10 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
         mediaAdapter.notifyItemChanged(position)
     }
 
-    override fun closeWithResult(pathList: Collection<MediaItem>) {
+    override fun closeWithResult(mediaItems: Collection<MediaItem>) {
+        //todo make a common result builder
         val data = Intent()
-        data.putParcelableArrayListExtra(KEY_DATA, ArrayList(pathList))
+        data.putParcelableArrayListExtra(KEY_DATA, ArrayList(mediaItems))
         setResult(Activity.RESULT_OK, data)
         finish()
     }

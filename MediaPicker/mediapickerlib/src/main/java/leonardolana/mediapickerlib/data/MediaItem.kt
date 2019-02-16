@@ -7,15 +7,23 @@ import java.io.File
 class MediaItem(val path: String, val lastModifiedDate: Long) : Parcelable {
 
     val name : String = path.split(File.separator).last()
+    var isVideo : Boolean = false
+        private set
+
+    constructor(path: String, lastModifiedDate: Long, isVideo : Boolean) : this(path, lastModifiedDate) {
+        this.isVideo = isVideo
+    }
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readLong()
+        parcel.readLong(),
+        parcel.readInt() == 1
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(path)
         parcel.writeLong(lastModifiedDate)
+        parcel.writeInt(if (isVideo) 1 else 0)
     }
 
     override fun describeContents(): Int {
