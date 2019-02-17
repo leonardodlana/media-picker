@@ -46,10 +46,11 @@ public class Utils {
 
     public interface OnSaveBitmapListener {
         void onSuccess(String path, long lastModified);
+
         void onError();
     }
 
-    public static Map<String, MediaAlbum> getAllMediaPathsOnGallery(Context context) {
+    public static Map<String, MediaAlbum> getAllMediaPathsOnGallery(Context context, Boolean picturesOnly) {
         Map<String, MediaAlbum> result = new HashMap<>();
 
         try {
@@ -62,15 +63,6 @@ public class Utils {
 
             Cursor cursor = context.getContentResolver().query(uri, projection, null,
                     null, MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
-
-            String[] projectionVideo = {MediaStore.MediaColumns.DATA,
-                    MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-                    MediaStore.MediaColumns.DATE_MODIFIED
-            };
-
-            Cursor cursorVideos = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    projectionVideo, null, null,
-                    MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
 
             int pathColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             int albumNameColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
@@ -94,18 +86,30 @@ public class Utils {
                 result.put(albumName, mediaAlbum);
             }
 
-            while (cursorVideos.moveToNext()) {
-                itemPath = cursorVideos.getString(pathColumnIndex);
-                albumName = cursorVideos.getString(albumNameColumnIndex);
-                itemLastModifiedDate = cursorVideos.getLong(dateModifiedColumnIndex);
+            if (!picturesOnly) {
+                String[] projectionVideo = {MediaStore.MediaColumns.DATA,
+                        MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                        MediaStore.MediaColumns.DATE_MODIFIED
+                };
 
-                mediaAlbum = result.get(albumName);
-                if (mediaAlbum == null)
-                    mediaAlbum = new MediaAlbum(albumName);
+                Cursor cursorVideos = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        projectionVideo, null, null,
+                        MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
 
-                mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate));
-                result.put(albumName, mediaAlbum);
+                while (cursorVideos.moveToNext()) {
+                    itemPath = cursorVideos.getString(pathColumnIndex);
+                    albumName = cursorVideos.getString(albumNameColumnIndex);
+                    itemLastModifiedDate = cursorVideos.getLong(dateModifiedColumnIndex);
+
+                    mediaAlbum = result.get(albumName);
+                    if (mediaAlbum == null)
+                        mediaAlbum = new MediaAlbum(albumName);
+
+                    mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate));
+                    result.put(albumName, mediaAlbum);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,10 +161,11 @@ public class Utils {
                     e.printStackTrace();
                     listener.onError();
                 } finally {
-                    if(fileOutputStream != null) {
+                    if (fileOutputStream != null) {
                         try {
                             fileOutputStream.close();
-                        } catch (Exception ignored) {}
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }
@@ -176,15 +181,16 @@ public class Utils {
         return extension.equals("mp4");
     }
 
-    /** The picker is not providing a content library, I just want
-     *  to be able to save a freaking file on the external storage.
+    /**
+     * The picker is not providing a content library, I just want
+     * to be able to save a freaking file on the external storage.
      */
     public static void disableChecks() {
-        if(Build.VERSION.SDK_INT>=24){
-            try{
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
                 Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                 m.invoke(null);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

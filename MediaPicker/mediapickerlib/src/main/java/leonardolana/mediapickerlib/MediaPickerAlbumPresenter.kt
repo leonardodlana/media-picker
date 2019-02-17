@@ -10,10 +10,10 @@ import leonardolana.mediapickerlib.permission.Permission
 import leonardolana.mediapickerlib.permission.PermissionHelper
 import leonardolana.mediapickerlib.permission.PermissionWatcher
 
-class MediaPickerAlbumPresenter(private val mediaPickerAlbumView: MediaPickerAlbumView) : BasePresenter(), PermissionWatcher {
+class MediaPickerAlbumPresenter(private val mediaPickerAlbumView: MediaPickerAlbumView, private val showOnlyPictures: Boolean) : BasePresenter(), PermissionWatcher {
 
     private fun load() {
-        AlbumRepository.instance.load(mediaPickerAlbumView.getContext(), object : AlbumRepository.OnAlbumListener {
+        AlbumRepository.instance.load(mediaPickerAlbumView.getContext(), showOnlyPictures, object : AlbumRepository.OnAlbumListener {
             override fun onLoad(albums: Map<String, MediaAlbum>) {
                 mediaPickerAlbumView.onAlbumsLoaded(albums)
             }

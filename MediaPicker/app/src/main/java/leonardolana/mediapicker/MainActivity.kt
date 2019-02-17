@@ -12,10 +12,9 @@ class MainActivity : Activity() {
 
     companion object {
         const val REQUEST_CODE = 999
-        const val KEY_DATA = "data"
     }
 
-    private lateinit var adapter : RecyclerViewAdapter
+    private lateinit var adapter: RecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +33,12 @@ class MainActivity : Activity() {
     }
 
     private fun openPicker() {
-        val intentPicker = Intent(applicationContext, MediaPickerAlbumActivity::class.java)
-        startActivityForResult(intentPicker, REQUEST_CODE)
+        MediaPickerAlbumActivity.launch(this, false, REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            val selectedItems = data?.getParcelableArrayListExtra<MediaItem>(KEY_DATA)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            val selectedItems = data?.getParcelableArrayListExtra<MediaItem>(MediaPickerAlbumActivity.KEY_DATA)
             if (selectedItems != null) {
                 adapter.setData(selectedItems)
             }

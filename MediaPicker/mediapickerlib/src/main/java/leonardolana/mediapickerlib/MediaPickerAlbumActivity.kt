@@ -27,6 +27,14 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 342
+        const val KEY_DATA = "data"
+        const val KEY_ONLY_PICTURES = "only_pictures"
+
+        fun launch(activity: Activity, showOnlyPictures: Boolean, requestCode: Int) {
+            val intentPicker = Intent(activity, MediaPickerAlbumActivity::class.java)
+            intentPicker.putExtra(KEY_ONLY_PICTURES, showOnlyPictures)
+            activity.startActivityForResult(intentPicker, requestCode)
+        }
     }
 
     private lateinit var mediaPresenter: MediaPickerAlbumPresenter
@@ -35,7 +43,9 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
     private var bitmapTempFilePath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mediaPresenter = MediaPickerAlbumPresenter(this)
+        val showOnlyPictures = intent.getBooleanExtra(KEY_ONLY_PICTURES, false)
+
+        mediaPresenter = MediaPickerAlbumPresenter(this, showOnlyPictures)
         super.onCreate(savedInstanceState)
 
         Utils.disableChecks()

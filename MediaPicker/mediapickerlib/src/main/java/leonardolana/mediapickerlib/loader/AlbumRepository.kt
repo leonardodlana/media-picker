@@ -16,8 +16,8 @@ class AlbumRepository {
 
     private var albums : Map<String, MediaAlbum>? = null
 
-    fun load(context: Context, listener: OnAlbumListener) {
-        val loadedAlbums = Utils.getAllMediaPathsOnGallery(context)
+    fun load(context: Context, searchForPicturesOnly: Boolean, listener: OnAlbumListener) {
+        val loadedAlbums = Utils.getAllMediaPathsOnGallery(context, searchForPicturesOnly)
         albums = loadedAlbums
         listener.onLoad(albums!!)
     }
