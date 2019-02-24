@@ -26,13 +26,22 @@ import leonardolana.mediapickerlib.permission.PermissionHelper
 class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
 
     companion object {
-        const val REQUEST_IMAGE_CAPTURE = 342
+
+        private const val REQUEST_IMAGE_CAPTURE = 342
+        private const val KEY_ONLY_PICTURES = "only_pictures"
+        private const val KEY_SELECTION_LIMIT = "selection_limit"
+
+        const val SELECTION_LIMIT_LIMITLESS = -1
         const val KEY_DATA = "data"
-        const val KEY_ONLY_PICTURES = "only_pictures"
 
         fun launch(activity: Activity, showOnlyPictures: Boolean, requestCode: Int) {
+            launch(activity, showOnlyPictures, SELECTION_LIMIT_LIMITLESS, requestCode)
+        }
+
+        fun launch(activity: Activity, showOnlyPictures: Boolean, selectionLimit: Int, requestCode: Int) {
             val intentPicker = Intent(activity, MediaPickerAlbumActivity::class.java)
             intentPicker.putExtra(KEY_ONLY_PICTURES, showOnlyPictures)
+            intentPicker.putExtra(KEY_SELECTION_LIMIT, selectionLimit)
             activity.startActivityForResult(intentPicker, requestCode)
         }
     }
@@ -44,8 +53,9 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val showOnlyPictures = intent.getBooleanExtra(KEY_ONLY_PICTURES, false)
+        val selectionLimit = intent.getIntExtra(KEY_SELECTION_LIMIT, SELECTION_LIMIT_LIMITLESS)
 
-        mediaPresenter = MediaPickerAlbumPresenter(this, showOnlyPictures)
+        mediaPresenter = MediaPickerAlbumPresenter(this, showOnlyPictures, selectionLimit)
         super.onCreate(savedInstanceState)
 
         Utils.disableChecks()
@@ -109,8 +119,8 @@ class MediaPickerAlbumActivity : BaseActivity(), MediaPickerAlbumView {
         PermissionHelper.requestPermission(this, null, permission)
     }
 
-    override fun openAlbum(album: MediaAlbum) {
-        MediaPickerActivity.launch(this, album)
+    override fun openAlbum(album: MediaAlbum, selectionLimit: Int) {
+        MediaPickerActivity.launch(this, album, selectionLimit)
     }
 
     override fun openCamera() {

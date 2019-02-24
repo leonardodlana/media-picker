@@ -105,7 +105,7 @@ public class Utils {
                     if (mediaAlbum == null)
                         mediaAlbum = new MediaAlbum(albumName);
 
-                    mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate));
+                    mediaAlbum.addMedia(new MediaItem(itemPath, itemLastModifiedDate, true));
                     result.put(albumName, mediaAlbum);
                 }
             }

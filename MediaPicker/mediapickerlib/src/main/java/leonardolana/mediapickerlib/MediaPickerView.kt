@@ -8,5 +8,6 @@ interface MediaPickerView {
     fun notifyItemChanged(position: Int)
     fun changeMenuVisibility(visible: Boolean)
     fun closeWithResult(mediaItems: Collection<MediaItem>)
+    fun notifySelectionLimitReached()
 
 }

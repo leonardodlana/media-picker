@@ -22,4 +22,6 @@
 
     <dimen name="media_album_item_margin_start">8dp</dimen>
     <dimen name="media_album_item_margin_bottom">8dp</dimen>
+
+    <dimen name="media_item_margin">8dp</dimen>
 </resources>

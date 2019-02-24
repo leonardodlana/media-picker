@@ -33,7 +33,7 @@ class MainActivity : Activity() {
     }
 
     private fun openPicker() {
-        MediaPickerAlbumActivity.launch(this, false, REQUEST_CODE)
+        MediaPickerAlbumActivity.launch(this, false, MediaPickerAlbumActivity.SELECTION_LIMIT_LIMITLESS, REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

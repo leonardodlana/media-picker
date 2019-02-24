@@ -10,7 +10,9 @@ import leonardolana.mediapickerlib.permission.Permission
 import leonardolana.mediapickerlib.permission.PermissionHelper
 import leonardolana.mediapickerlib.permission.PermissionWatcher
 
-class MediaPickerAlbumPresenter(private val mediaPickerAlbumView: MediaPickerAlbumView, private val showOnlyPictures: Boolean) : BasePresenter(), PermissionWatcher {
+class MediaPickerAlbumPresenter(private val mediaPickerAlbumView: MediaPickerAlbumView,
+                                private val showOnlyPictures: Boolean,
+                                private val selectionLimit: Int) : BasePresenter(), PermissionWatcher {
 
     private fun load() {
         AlbumRepository.instance.load(mediaPickerAlbumView.getContext(), showOnlyPictures, object : AlbumRepository.OnAlbumListener {
@@ -42,7 +44,7 @@ class MediaPickerAlbumPresenter(private val mediaPickerAlbumView: MediaPickerAlb
     }
 
     fun onAlbumClick(album: MediaAlbum) {
-        mediaPickerAlbumView.openAlbum(album)
+        mediaPickerAlbumView.openAlbum(album, selectionLimit)
     }
 
     fun onCameraClick() {

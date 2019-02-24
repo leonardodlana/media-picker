@@ -10,7 +10,7 @@ interface MediaPickerAlbumView {
     fun getContext(): Context
     fun askPermission(permission: Permission)
     fun onAlbumsLoaded(albums: Map<String, MediaAlbum>)
-    fun openAlbum(album: MediaAlbum)
+    fun openAlbum(album: MediaAlbum, selectionLimit: Int)
     fun openCamera()
     fun finishWithResult(mediaItem: MediaItem)
 

@@ -12,7 +12,7 @@
     <View android:id="@+id/thumbnailShadow"
           android:layout_width="match_parent" android:layout_height="60dp"
           android:layout_alignParentTop="true"
-          android:visibility="gone"
+          android:visibility="visible"
           android:background="@drawable/shadow_top_to_bottom"/>
 
     <ImageView android:id="@+id/thumbnailCheck"
@@ -20,9 +20,19 @@
                android:src="@drawable/ic_check"
                android:visibility="gone"
                android:layout_alignParentStart="true"
-               android:layout_marginStart="@dimen/media_album_item_margin_bottom"
-               android:layout_marginTop="@dimen/media_album_item_margin_start"
+               android:layout_marginStart="@dimen/media_item_margin"
+               android:layout_marginTop="@dimen/media_item_margin"
                android:tint="@color/md_white_1000"
                android:layout_alignParentTop="true"/>
+
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+               android:src="@drawable/ic_video"
+               android:id="@+id/thumbnailVideoIcon"
+               android:layout_alignParentEnd="true"
+               android:visibility="gone"
+               android:layout_alignParentTop="true"
+               android:layout_marginEnd="@dimen/media_item_margin"
+               android:tint="@color/md_white_1000"
+               android:layout_marginTop="@dimen/media_item_margin"/>
 
 </RelativeLayout>

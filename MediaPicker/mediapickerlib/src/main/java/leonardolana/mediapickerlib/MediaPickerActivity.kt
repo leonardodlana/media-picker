@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_media_picker.*
+import leonardolana.mediapickerlib.MediaPickerAlbumActivity.Companion.SELECTION_LIMIT_LIMITLESS
 import leonardolana.mediapickerlib.adapter.MediaRecyclerViewAdapter
 import leonardolana.mediapickerlib.common.BaseActivity
 import leonardolana.mediapickerlib.common.BasePresenter
@@ -20,11 +21,14 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
     companion object {
 
         private const val KEY_ALBUM_NAME = "album_name"
+        private const val KEY_SELECTION_LIMIT = "selection_limit"
+
         const val KEY_DATA = "data"
 
-        fun launch(activity: Activity, album: MediaAlbum) {
+        fun launch(activity: Activity, album: MediaAlbum, selectionLimit: Int) {
             val intentPicker = Intent(activity, MediaPickerActivity::class.java)
             intentPicker.putExtra(KEY_ALBUM_NAME, album.name)
+            intentPicker.putExtra(KEY_SELECTION_LIMIT, selectionLimit)
             activity.startActivityForResult(intentPicker, 999)
         }
     }
@@ -35,7 +39,9 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
     private var sendMenuButton: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mediaPresenter = MediaPickerPresenter(this)
+        val selectionLimit = intent.getIntExtra(KEY_SELECTION_LIMIT, SELECTION_LIMIT_LIMITLESS)
+
+        mediaPresenter = MediaPickerPresenter(this, selectionLimit)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_media_picker)
@@ -92,6 +98,10 @@ class MediaPickerActivity : BaseActivity(), MediaPickerView {
 
     override fun notifyItemChanged(position: Int) {
         mediaAdapter.notifyItemChanged(position)
+    }
+
+    override fun notifySelectionLimitReached() {
+        //todo feedback
     }
 
     override fun closeWithResult(mediaItems: Collection<MediaItem>) {

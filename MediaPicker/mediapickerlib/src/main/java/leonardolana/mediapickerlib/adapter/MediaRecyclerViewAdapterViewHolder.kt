@@ -12,6 +12,7 @@ class MediaRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.ViewHold
     private var imageViewThumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
     private var imageViewShadow: View = itemView.findViewById(R.id.thumbnailShadow)
     private var imageViewThumnailCheck: ImageView = itemView.findViewById(R.id.thumbnailCheck)
+    private var imageViewThumbnailVideoIcon: ImageView = itemView.findViewById(R.id.thumbnailVideoIcon)
 
     fun onBindViewHolder(
         position: Int,
@@ -34,11 +35,15 @@ class MediaRecyclerViewAdapterViewHolder(itemView: View) : RecyclerView.ViewHold
             onItemClickListener?.onClick(position, mediaItem)
         }
 
-        if(isSelected) {
+        imageViewThumbnailVideoIcon.visibility = if (mediaItem.isVideo) View.VISIBLE else View.GONE
+
+        if (isSelected) {
             imageViewShadow.visibility = View.VISIBLE
             imageViewThumnailCheck.visibility = View.VISIBLE
         } else {
-            imageViewShadow.visibility = View.GONE
+            if(!mediaItem.isVideo)
+                imageViewShadow.visibility = View.GONE
+            
             imageViewThumnailCheck.visibility = View.GONE
         }
     }
